@@ -1,8 +1,8 @@
-package parser
+package ncpdpparser
 
 import (
 	"errors"
-	"github.com/transactrx/transactrx/ncpdpBaseParser/pkg/modules"
+	"github.com/transactrx/ncpdpBaseParser/pkg/ncpdpmodules"
 	"strings"
 	"sync"
 )
@@ -12,13 +12,13 @@ var fieldSeparator = "\u001C"
 
 var mu sync.Mutex
 
-func New(ncpdp string) (*modules.NCPDPMessage, error) {
+func New(ncpdp string) (*ncpdpmodules.NCPDPMessage, error) {
 	if ncpdp == "" {
 		return nil, errors.New("NCPDP string is empty")
 
 	}
-	msg := modules.NCPDPMessage{}
-	msg.Segments = make(map[string]modules.Segment)
+	msg := ncpdpmodules.NCPDPMessage{}
+	msg.Segments = make(map[string]ncpdpmodules.Segment)
 	segments := strings.Split(ncpdp, segmentSeparator)
 
 	for i, val := range segments {
@@ -30,8 +30,8 @@ func New(ncpdp string) (*modules.NCPDPMessage, error) {
 	return &msg, nil
 }
 
-func parseSegment(s string) modules.Segment {
-	segment := modules.Segment{}
+func parseSegment(s string) ncpdpmodules.Segment {
+	segment := ncpdpmodules.Segment{}
 	segment.Fields = make(map[string][]string)
 	fields := strings.Split(s, fieldSeparator)
 	for i, val := range fields {

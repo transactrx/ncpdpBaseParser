@@ -1,4 +1,4 @@
-package modules
+package ncpdpmodules
 
 type NCPDPMessage struct {
 	Segments map[string]Segment

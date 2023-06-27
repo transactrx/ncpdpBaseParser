@@ -9,12 +9,12 @@ type NCPDPMessage struct {
 	Segments map[string]Segment
 }
 
-func (msg *NCPDPMessage) GetCurrencyFieldValue(segmentId, fieldID string) (float64, error) {
+func (msg *NCPDPMessage) GetCurrencyFieldValue(segmentId, fieldID string, returnNull bool) (float64, error) {
 	fields := msg.GetField(segmentId, fieldID)
 	if len(fields) == 0 {
 		return float64(0.0), nil
 	}
-	val, err := parseNCPDPCurrencyString(fields[0])
+	val, err := parseNCPDPCurrencyString(fields[0], returnNull)
 
 	return *val, err
 
@@ -34,13 +34,16 @@ func (msg *NCPDPMessage) GetField(segmentId, fieldID string) []string {
 
 }
 
-func parseNCPDPCurrencyString(value string) (*float64, error) {
+func parseNCPDPCurrencyString(value string, returnNull bool) (*float64, error) {
 
 	if value == "" {
+		if returnNull {
+			return nil, nil
+		} else {
+			t := float64(0.0)
+			return &t, nil
+		}
 
-		t := float64(0.0)
-
-		return &t, nil
 	}
 
 	lastChar := string(value[len(value)-1])

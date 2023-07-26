@@ -28,8 +28,8 @@ func initializeGroupedFields() map[string][]string {
 	      448-ED Compound Ingredient Quantity
 	      449-EE Compound Ingredient Drug Cost
 	      49Ø-UE Compound Ingredient Basis of Cost Determination
-	   	   362-2G Compound Ingredient Modifier Code Count
-	   	   363-2H Compound Ingredient Modifier Code
+	   	  	362-2G Compound Ingredient Modifier Code Count
+	   	  		363-2H Compound Ingredient Modifier Code
 	*/
 	//RESPONSE SEGMENTS
 

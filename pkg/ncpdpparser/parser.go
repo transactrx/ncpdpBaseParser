@@ -17,7 +17,16 @@ var GROUP_FIELDS = initializeGroupedFields()
 
 func initializeGroupedFields() map[string][]string {
 	grpFields := make(map[string][]string)
+	//COMPOUNDS
 	grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE"}
+	//APPROVED MESSAGES
+	grpFields["5F"] = []string{"6F"}
+
+	//RESPONSE MESSAGES
+	grpFields["UF"] = []string{"UH", "FQ", "UG"}
+	//REJECT CODES
+	grpFields["FA"] = []string{"FB", "4F"}
+
 	grpFields["2G"] = []string{"2H"}
 
 	return grpFields
@@ -104,7 +113,7 @@ func parseSegment(s string) *orderedmap.OrderedMap[any] {
 
 			if groupFieldId != nil && segment.Get(*groupFieldId) != nil && foundPos > -1 {
 
-				var groupValArrObj interface{} = *(segment.Get(*groupFieldId))
+				var groupValArrObj = *(segment.Get(*groupFieldId))
 				groupValArray, _ := groupValArrObj.([]*orderedmap.OrderedMap[string])
 				curIndex := len(groupValArray) - 1
 
@@ -112,8 +121,6 @@ func parseSegment(s string) *orderedmap.OrderedMap[any] {
 					currentGroupMemberPos = foundPos
 					groupValArray[curIndex].Put(fieldId, fieldValue)
 				} else {
-					//var groupValArrObj interface{} = *(segment.Get(*groupFieldId))
-					//groupValArray, ok := groupValArrObj.([]*orderedmap.OrderedMap[string])
 					currentGroupMemberPos = foundPos
 
 					groupValArray = append(groupValArray, orderedmap.NewOrderedMap[string]())

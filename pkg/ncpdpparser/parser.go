@@ -23,14 +23,22 @@ func initializeGroupedFields() map[string][]string {
 	grpFields["5F"] = []string{"6F"}
 
 	//RESPONSE MESSAGES
-	grpFields["UF"] = []string{"UH", "FQ", "UG"}
+	grpFields["UF"] = []string{"UH", "FQ", "UG"} //548-6F - 132-UH - 526-FQ
 	//REJECT CODES
-	grpFields["FA"] = []string{"FB", "4F"}
+	grpFields["FA"] = []string{"FB", "4F"} //511-FB
 
 	grpFields["2G"] = []string{"2H"}
 
+	grpFields["9F"] = []string{"AR", "AS", "AT", "AU"} //RESPONSE CLAIM SEGMENT
+
+	grpFields["J2"] = []string{"J3", "J4", "J5"} //RESPONSE PRICING SEGMENT
+
+	grpFields["MU"] = []string{"MV", "MW"} //COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT
+
 	return grpFields
 }
+
+///	Npi,Name,Address
 
 var mu sync.Mutex
 

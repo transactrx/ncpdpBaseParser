@@ -8,7 +8,7 @@ type NCPDPMessage struct {
 	Groups []*Group
 }
 
-func (msg *NCPDPMessage) GetHeaderAsString(fieldId string) *string {
+func (msg *NCPDPMessage) GetHeaderFieldAsString(fieldId string) *string {
 	seg, ok := msg.Groups[0].Segments.GetAsValue("header")
 	if !ok {
 		return nil
@@ -19,6 +19,14 @@ func (msg *NCPDPMessage) GetHeaderAsString(fieldId string) *string {
 		return &value
 	}
 	return nil
+}
+
+func (msg *NCPDPMessage) GetPatientFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "01", fieldId)
+}
+
+func (msg *NCPDPMessage) GetInsuranceFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "04", fieldId)
 }
 
 func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, fieldId string) *string {

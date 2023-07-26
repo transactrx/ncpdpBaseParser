@@ -3,7 +3,7 @@ package ncpdpparser
 import (
 	"errors"
 	"fmt"
-	"github.com/transactrx/ncpdpBaseParser/pkg/ncpdpmodules"
+	"github.com/transactrx/ncpdpBaseParser/pkg/orderedmap"
 )
 
 func DetermineTransactionType(data []byte) (int, error) {
@@ -53,8 +53,14 @@ func DetermineTransactionType(data []byte) (int, error) {
 	return 0, NCPDPMessageInvalidOrUnsupported
 }
 
-func newSegmentHeader(seg *ncpdpmodules.Segment, data []byte) error {
+func newRequestHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 
+	//021684D0B1DATAUNVAIL4011669742144     20230705
+	if len(data) != 56 {
+		return nil, errors.New(fmt.Sprintf("header cannot be parsed, it doesnt have the right length %d", len(data)))
+	}
+
+	seg := orderedmap.NewOrderedMap[string]()
 	bin := data[0:6]
 	versionRel := data[6:8]
 	transactionCode := data[8:10]
@@ -65,60 +71,27 @@ func newSegmentHeader(seg *ncpdpmodules.Segment, data []byte) error {
 	dos := data[38:46]
 	softwareCertId := data[46:]
 
-	field1, err := newHeaderField(bin, "bin", 6)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field1)
-	field2, err := newHeaderField(versionRel, "versionRel", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field2)
-	field3, err := newHeaderField(transactionCode, "transactionCode", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field3)
-	field4, err := newHeaderField(pcn, "pcn", 10)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field4)
-	field5, err := newHeaderField(transactionCount, "transactionCount", 1)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field5)
-	field6, err := newHeaderField(serviceProviderIdQualifier, "serviceProviderIdQualifier", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field6)
-	field7, err := newHeaderField(serviceProviderId, "serviceProviderId", 15)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field7)
-	field8, err := newHeaderField(dos, "dos", 8)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field8)
-	field9, err := newHeaderField(softwareCertId, "softwareCertId", 10)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field9)
+	seg.Put("bin", string(bin))
+	seg.Put("versionRel", string(versionRel))
+	seg.Put("transactionCode", string(transactionCode))
+	seg.Put("pcn", string(pcn))
+	seg.Put("transactionCount", string(transactionCount))
+	seg.Put("serviceProviderIdQualifier", string(serviceProviderIdQualifier))
+	seg.Put("serviceProviderId", string(serviceProviderId))
+	seg.Put("dos", string(dos))
+	seg.Put("softwareCertId", string(softwareCertId))
 
-	return &seg, nil
+	return seg, nil
 }
 
-func newResponseSegmentHeader(data []byte) (*segment, error) {
-	seg := segment{header: true}
-	seg.id = "header"
-	seg.fieldsMap = make(map[string]interface{})
+func newResponseHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 
+	//D0B11A011861586273     20230629
+	if len(data) != 31 {
+		return nil, errors.New(fmt.Sprintf("header cannot be parsed, it doesnt have the right length %d", len(data)))
+	}
+
+	seg := orderedmap.NewOrderedMap[string]()
 	versionRel := data[0:2]
 	transactionCode := data[2:4]
 	transactionCount := data[4:5]
@@ -127,49 +100,18 @@ func newResponseSegmentHeader(data []byte) (*segment, error) {
 	serviceProviderId := data[8:23]
 	dos := data[23:31]
 
-	field1, err := newHeaderField(versionRel, "versionRel", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field1)
-	field2, err := newHeaderField(transactionCode, "transactionCode", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field2)
+	seg.Put("versionRel", string(versionRel))
+	seg.Put("transactionCode", string(transactionCode))
+	seg.Put("transactionCount", string(transactionCount))
+	seg.Put("transactionResponseStatus", string(transactionResponseStatus))
+	seg.Put("serviceProviderIdQualifier", string(serviceProviderIdQualifier))
+	seg.Put("serviceProviderId", string(serviceProviderId))
+	seg.Put("dos", string(dos))
 
-	field3, err := newHeaderField(transactionCount, "transactionCount", 1)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field3)
-
-	field4, err := newHeaderField(transactionResponseStatus, "transactionResponseStatus", 1)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field4)
-
-	field5, err := newHeaderField(serviceProviderIdQualifier, "serviceProviderIdQualifier", 2)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field5)
-	field6, err := newHeaderField(serviceProviderId, "serviceProviderId", 15)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field6)
-	field7, err := newHeaderField(dos, "dos", 8)
-	if err != nil {
-		return nil, err
-	}
-	seg.addField(field7)
-
-	return &seg, nil
+	return seg, nil
 }
 
-func parseHeader(data []byte) (*ncpdpmodules.Segment, error) {
+func parseHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 	messageType, err := DetermineTransactionType(data)
 
 	if err != nil {
@@ -178,14 +120,9 @@ func parseHeader(data []byte) (*ncpdpmodules.Segment, error) {
 
 	switch messageType {
 	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, E1RequestType:
-		{
-			seg := ncpdpmodules.Segment{Header: true}
-
-		}
+		return newRequestHeader(data)
 	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, E1ResponseType:
-		{
-
-		}
+		return newRequestHeader(data)
 	default:
 		return nil, errors.New("unable to determine transaction type")
 

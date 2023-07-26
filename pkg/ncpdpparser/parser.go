@@ -74,14 +74,17 @@ func parseGroup(groupString string, groupNumber int) *ncpdpmodules.Group {
 
 	for i, val := range segments {
 		if i == 0 && groupNumber == 0 {
-			//header
+			newSegment, _ := parseHeader([]byte(val))
+			segmentId := "header"
+			resultGroup.Segments.Put(fmt.Sprintf("%s", segmentId), newSegment)
 			continue
-		}
-		newSegment := parseSegment(val)
-		segmentID := newSegment.Get("AM")
-		if segmentID != nil {
+		} else {
+			newSegment := parseSegment(val)
+			segmentID := newSegment.Get("AM")
+			if segmentID != nil {
 
-			resultGroup.Segments.Put(fmt.Sprintf("%s", *segmentID), newSegment)
+				resultGroup.Segments.Put(fmt.Sprintf("%s", *segmentID), newSegment)
+			}
 		}
 
 	}

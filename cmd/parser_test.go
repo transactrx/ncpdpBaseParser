@@ -25,6 +25,7 @@ func TestCreateNcpdpObject(t *testing.T) {
 	ef := ncpdp.GetFieldValueAsString(3, "07", "D2")
 	log.Printf("EF: %v", ef)
 	gr := ncpdp.GetFieldValueAsGroup(3, "10", "EC")
+	
 	log.Printf("GR: %v", gr)
 
 	if ncpdp == nil {

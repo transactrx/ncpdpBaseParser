@@ -17,30 +17,66 @@ var GROUP_FIELDS = initializeGroupedFields()
 
 func initializeGroupedFields() map[string][]string {
 	grpFields := make(map[string][]string)
-	//COMPOUNDS
+	//COMPOUND SEGMENT
 	grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE"}
+	grpFields["2G"] = []string{"2H"} //COMPOUND SEGMENT - Compound Ingredient Modifier
+	/*
 
-	//RESPONSE MESSAGES
+	      447-EC Compound Ingredient Component Count
+	      488-RE Compound Product ID Qualifier
+	      489-TE Compound Product ID
+	      448-ED Compound Ingredient Quantity
+	      449-EE Compound Ingredient Drug Cost
+	      49Ø-UE Compound Ingredient Basis of Cost Determination
+	   	   362-2G Compound Ingredient Modifier Code Count
+	   	   363-2H Compound Ingredient Modifier Code
+	*/
+	//RESPONSE SEGMENTS
 
-	//APPROVED MESSAGES
+	//RESPONSE STATUS SEGMENT
 	grpFields["5F"] = []string{"6F"} //RESPONSE STATUS SEGMENT - APPROVED MESSAGE CODE
 
 	grpFields["UF"] = []string{"UH", "FQ", "UG"} //RESPONSE STATUS SEGMENT - ADDITIONAL MESSAGE INFORMATION
 	//REJECT CODES
 	grpFields["FA"] = []string{"FB", "4F"} //RESPONSE STATUS SEGMENT -ADDITIONAL MESSAGE INFORMATION
 
-	grpFields["2G"] = []string{"2H"} //COMPOUND SEGMENT
+	grpFields["9F"] = []string{"AP", "AR", "AS", "AT", "AU"} //RESPONSE CLAIM SEGMENT
 
-	grpFields["9F"] = []string{"AR", "AS", "AT", "AU"} //RESPONSE CLAIM SEGMENT
-
-	grpFields["J2"] = []string{"J3", "J4", "J5"} //RESPONSE PRICING SEGMENT
+	grpFields["J2"] = []string{"J3", "J4", "J5"} //RESPONSE PRICING SEGMENT - Other Amount Paid Repetitions Only -->ko
 
 	grpFields["MU"] = []string{"MV", "MW"} //COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT
 
-	grpFields["J6"] = []string{"E4", "FS", "FT", "FU", "FV", "FW", "FX ", "FY ", "NS"} //RESPONSE DUR/PPS SEGMENT
+	grpFields["J6"] = []string{"E4", "FS", "FT", "FU", "FV", "FW", "FX ", "FY ", "NS"} //RESPONSE DUR/PPS SEGMENT -->ko
 
 	grpFields["NT"] = []string{"5C", "6C", "7C", "MH", "NU", "MJ", "UV", "UB", "UW", "UX", "UY"} //RESPONSE COORDINATION OF BENEFITS/OTHER PAYERS SEGMENT
 
+	//RESPONSE
+	//CLAIM SEGMENT
+	grpFields["SE"] = []string{"ER"} //Procedure Modifier Code
+	grpFields["NX"] = []string{"DK"} //SUBMISSION CLARIFICATION
+
+	//PRICING SEGMENT
+	grpFields["H7"] = []string{"H8", "H9"} //OTHER AMOUNT CLAIMED SUBMITTED
+
+	//COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT - COB
+	grpFields["4C"] = []string{"5C", "6C", "7C", "E8", "A7"} //OTHER PAYER COVERAGE
+	grpFields["HB"] = []string{"HC", "DV"}                   //OTHER PAYER AMOUNT PAID
+	grpFields["5E"] = []string{"6E"}                         //OTHER PAYER REJECT
+	grpFields["NR"] = []string{"NP", "NQ"}                   //OTHER PAYER-PATIENT RESPONSIBILITY AMOUNT
+	//grpFields["MU"] = []string{"MV", "MW"}                  //todo is already defined
+
+	//DUR/PPS SEGMENT
+	grpFields["7E"] = []string{"E4", "E5", "E6", "8E", "J9", "H6"} //DUR/PPS CODE
+
+	//COMPOUND SEGMENT
+	//grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE"}//todo is already defined
+	//grpFields["2G"] = []string{"2H"} //todo is already defined
+
+	//CLINICAL SEGMENT
+	grpFields["VE"] = []string{"WE", "DO", "XE", "ZE", "H1", "H2", "H3", "H4"} //DIAGNOSIS CODE
+
+	//ADDITIONAL DOCUMENTATION SEGMENT
+	grpFields["2Z"] = []string{"4B", "4D", "4G", "4H", "4J", "4K"} //QUESTION
 	return grpFields
 }
 

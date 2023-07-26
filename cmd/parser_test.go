@@ -22,10 +22,12 @@ func TestCreateNcpdpObject(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error parsing NCPDP request: %v", err)
 	}
+	b := ncpdp.GetHeaderAsString("bin")
+	log.Printf("Hedaer bin: %s", *b)
 	ef := ncpdp.GetFieldValueAsString(3, "07", "D2")
 	log.Printf("EF: %v", ef)
 	gr := ncpdp.GetFieldValueAsGroup(3, "10", "EC")
-	
+
 	log.Printf("GR: %v", gr)
 
 	if ncpdp == nil {

@@ -8,6 +8,19 @@ type NCPDPMessage struct {
 	Groups []*Group
 }
 
+func (msg *NCPDPMessage) GetHeaderAsString(fieldId string) *string {
+	seg, ok := msg.Groups[0].Segments.GetAsValue("header")
+	if !ok {
+		return nil
+	}
+
+	value, ok := seg.(*orderedmap.OrderedMap[string]).GetAsValue(fieldId)
+	if ok {
+		return &value
+	}
+	return nil
+}
+
 func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, fieldId string) *string {
 	seg, ok := msg.Groups[groupNumber].Segments.GetAsValue(segment)
 	if !ok {

@@ -19,21 +19,27 @@ func initializeGroupedFields() map[string][]string {
 	grpFields := make(map[string][]string)
 	//COMPOUNDS
 	grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE"}
-	//APPROVED MESSAGES
-	grpFields["5F"] = []string{"6F"}
 
 	//RESPONSE MESSAGES
-	grpFields["UF"] = []string{"UH", "FQ", "UG"} //548-6F - 132-UH - 526-FQ
-	//REJECT CODES
-	grpFields["FA"] = []string{"FB", "4F"} //511-FB
 
-	grpFields["2G"] = []string{"2H"}
+	//APPROVED MESSAGES
+	grpFields["5F"] = []string{"6F"} //RESPONSE STATUS SEGMENT - APPROVED MESSAGE CODE
+
+	grpFields["UF"] = []string{"UH", "FQ", "UG"} //RESPONSE STATUS SEGMENT - ADDITIONAL MESSAGE INFORMATION
+	//REJECT CODES
+	grpFields["FA"] = []string{"FB", "4F"} //RESPONSE STATUS SEGMENT -ADDITIONAL MESSAGE INFORMATION
+
+	grpFields["2G"] = []string{"2H"} //COMPOUND SEGMENT
 
 	grpFields["9F"] = []string{"AR", "AS", "AT", "AU"} //RESPONSE CLAIM SEGMENT
 
 	grpFields["J2"] = []string{"J3", "J4", "J5"} //RESPONSE PRICING SEGMENT
 
 	grpFields["MU"] = []string{"MV", "MW"} //COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT
+
+	grpFields["J6"] = []string{"E4", "FS", "FT", "FU", "FV", "FW", "FX ", "FY ", "NS"} //RESPONSE DUR/PPS SEGMENT
+
+	grpFields["NT"] = []string{"5C", "6C", "7C", "MH", "NU", "MJ", "UV", "UB", "UW", "UX", "UY"} //RESPONSE COORDINATION OF BENEFITS/OTHER PAYERS SEGMENT
 
 	return grpFields
 }

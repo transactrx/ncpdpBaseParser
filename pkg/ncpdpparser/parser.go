@@ -18,8 +18,8 @@ var GROUP_FIELDS = initializeGroupedFields()
 func initializeGroupedFields() map[string][]string {
 	grpFields := make(map[string][]string)
 	//COMPOUND SEGMENT
-	grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE"}
-	grpFields["2G"] = []string{"2H"} //COMPOUND SEGMENT - Compound Ingredient Modifier
+	grpFields["EC"] = []string{"RE", "TE", "ED", "EE", "UE", "2G"} //todo 2G is subgroup
+	grpFields["2G"] = []string{"2H"}                               //COMPOUND SEGMENT - Compound Ingredient Modifier
 	/*
 
 	      447-EC Compound Ingredient Component Count
@@ -59,11 +59,24 @@ func initializeGroupedFields() map[string][]string {
 	grpFields["H7"] = []string{"H8", "H9"} //OTHER AMOUNT CLAIMED SUBMITTED
 
 	//COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT - COB
-	grpFields["4C"] = []string{"5C", "6C", "7C", "E8", "A7"} //OTHER PAYER COVERAGE
-	grpFields["HB"] = []string{"HC", "DV"}                   //OTHER PAYER AMOUNT PAID
-	grpFields["5E"] = []string{"6E"}                         //OTHER PAYER REJECT
-	grpFields["NR"] = []string{"NP", "NQ"}                   //OTHER PAYER-PATIENT RESPONSIBILITY AMOUNT
+	grpFields["4C"] = []string{"5C", "6C", "7C", "E8", "HB", "NR"} //OTHER PAYER COVERAGE //todo HB,NR is a subgroup
+	grpFields["HB"] = []string{"HC", "DV"}                         //OTHER PAYER AMOUNT PAID
+	grpFields["5E"] = []string{"6E"}                               //OTHER PAYER REJECT
+	grpFields["NR"] = []string{"NP", "NQ"}                         //OTHER PAYER-PATIENT RESPONSIBILITY AMOUNT
 	//grpFields["MU"] = []string{"MV", "MW"}                  //todo is already defined
+
+	/*
+		337-4C Coordination of Benefits/Other Payments Count
+			338-5C Other Payer Coverage Type
+			339-6C Other Payer ID Qualifier
+			34Ø-7C Other Payer ID
+			443-E8 Other Payer Date
+			471-5E Other Payer Reject Count
+				472-6E Other Payer Reject Code
+				472-6E Other Payer Reject Code
+				472-6E Other Payer Reject Code
+
+	*/
 
 	//DUR/PPS SEGMENT
 	grpFields["7E"] = []string{"E4", "E5", "E6", "8E", "J9", "H6"} //DUR/PPS CODE

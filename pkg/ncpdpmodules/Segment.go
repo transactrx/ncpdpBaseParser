@@ -1,5 +1,8 @@
 package ncpdpmodules
 
+import "github.com/transactrx/ncpdpBaseParser/pkg/orderedmap"
+
 type Segment struct {
-	Fields map[string][]string
+	FieldGroups *orderedmap.OrderedMap[interface{}]
+	Header      bool
 }

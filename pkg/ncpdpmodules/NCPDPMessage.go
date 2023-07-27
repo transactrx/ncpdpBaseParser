@@ -1,110 +1,79 @@
 package ncpdpmodules
 
 import (
-	"strconv"
-	"strings"
+	"github.com/transactrx/ncpdpBaseParser/pkg/orderedmap"
 )
 
 type NCPDPMessage struct {
-	Segments map[string]Segment
+	Groups []*Group
 }
 
-func (msg *NCPDPMessage) GetCurrencyFieldValue(segmentId, fieldID string, returnNull bool) (float64, error) {
-	fields := msg.GetField(segmentId, fieldID)
-	if len(fields) == 0 {
-		return float64(0.0), nil
+func (msg *NCPDPMessage) GetHeaderFieldAsString(fieldId string) *string {
+	seg, ok := msg.Groups[0].Segments.GetAsValue("header")
+	if !ok {
+		return nil
 	}
-	val, err := parseNCPDPCurrencyString(fields[0], returnNull)
 
-	return *val, err
-
-}
-
-func (msg *NCPDPMessage) GetFieldValue(segmentId, fieldID string) string {
-	fields := msg.GetField(segmentId, fieldID)
-	if len(fields) == 0 {
-		return ""
+	value, ok := seg.(*orderedmap.OrderedMap[string]).GetAsValue(fieldId)
+	if ok {
+		return &value
 	}
-	return fields[0]
-
-}
-func (msg *NCPDPMessage) GetField(segmentId, fieldID string) []string {
-	segment := msg.Segments[segmentId]
-	return segment.Fields[fieldID]
-
+	return nil
 }
 
-func parseNCPDPCurrencyString(value string, returnNull bool) (*float64, error) {
+func (msg *NCPDPMessage) GetPatientFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "01", fieldId)
+}
 
-	if value == "" {
-		if returnNull {
-			return nil, nil
-		} else {
-			t := float64(0.0)
-			return &t, nil
+func (msg *NCPDPMessage) GetInsuranceFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "04", fieldId)
+}
+
+func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, fieldId string) *string {
+	seg, ok := msg.Groups[groupNumber].Segments.GetAsValue(segment)
+	if !ok {
+		return nil
+	}
+	value, ok := seg.(*orderedmap.OrderedMap[any]).GetAsValue(fieldId)
+	if ok {
+		switch v := value.(type) {
+		case []*orderedmap.OrderedMap[string]:
+			return nil
+		case string:
+			return &v
+		default:
+			return nil
 		}
-
 	}
 
-	lastChar := string(value[len(value)-1])
-	v := ""
-	negative := false
-
-	switch {
-
-	case lastChar == "}" || lastChar == "{":
-		negative = lastChar == "}"
-		v = "0"
-		break
-	case lastChar == "A" || lastChar == "J":
-		negative = lastChar == "J"
-		v = "1"
-		break
-	case lastChar == "B" || lastChar == "K":
-		negative = lastChar == "K"
-		v = "2"
-		break
-	case lastChar == "C" || lastChar == "L":
-		negative = lastChar == "L"
-		v = "3"
-		break
-	case lastChar == "D" || lastChar == "M":
-		negative = lastChar == "M"
-		v = "4"
-		break
-
-	case lastChar == "N" || lastChar == "E":
-		negative = lastChar == "N"
-		v = "5"
-		break
-
-	case lastChar == "F" || lastChar == "O":
-		negative = lastChar == "O"
-		v = "6"
-		break
-	case lastChar == "G" || lastChar == "P":
-		negative = lastChar == "P"
-		v = "7"
-		break
-	case lastChar == "H" || lastChar == "Q":
-		negative = lastChar == "Q"
-		v = "8"
-		break
-	case lastChar == "I" || lastChar == "R":
-		negative = lastChar == "R"
-		v = "9"
-		break
-	}
-	value = strings.Replace(value, lastChar, v, 1)
-
-	tResult, err := strconv.ParseFloat(value, 64)
-	if err != nil {
-		return nil, err
-	}
-	result := float64(tResult / 100)
-	if negative {
-		result = float64(-tResult / 100)
-	}
-
-	return &result, nil
+	return nil
 }
+
+func (msg *NCPDPMessage) GetFieldValueAsGroup(groupNumber int, segment string, fieldId string) []*orderedmap.OrderedMap[string] {
+	seg, ok := msg.Groups[groupNumber].Segments.GetAsValue(segment)
+	if !ok {
+		return nil
+	}
+	value, ok := seg.(*orderedmap.OrderedMap[any]).GetAsValue(fieldId)
+	if ok {
+		switch v := value.(type) {
+		case []*orderedmap.OrderedMap[string]:
+			return v
+		case *orderedmap.OrderedMap[string]:
+			return nil
+		default:
+			return nil
+		}
+	}
+
+	return nil
+}
+
+//func (msg *NCPDPMessage) GetFieldGroupCount(groupNumber int,segment string,fieldID string) int {
+//	return msg.Groups[groupNumber].Segments.Get(segment).FieldGroups[fieldID].
+//}
+
+//
+//func (msg *NCPDPMessage) GetFieldValue(groupNumber int, segmentId string, fieldGroupNumber int, fieldId string) string {
+//	return ncpdpparser.GetFromMap(msg.Groups[strconv.Itoa(groupNumber)].Segments[segmentId].FieldGroups[fieldGroupNumber], fieldId)
+//}

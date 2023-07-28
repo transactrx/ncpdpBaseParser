@@ -122,7 +122,7 @@ func parseHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, E1RequestType:
 		return newRequestHeader(data)
 	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, E1ResponseType:
-		return newRequestHeader(data)
+		return newResponseHeader(data)
 	default:
 		return nil, errors.New("unable to determine transaction type")
 

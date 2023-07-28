@@ -44,8 +44,11 @@ func TestCreateNcpdpObject(t *testing.T) {
 	i := ncpdp.GetInsuranceFieldAsString("C2")
 	if i == nil {
 		t.Errorf("Unable to find field value for 02-C2. Expected CardholderId")
-	} else {
-		log.Printf("Patient CardholderId: %s", *i)
+	}
+
+	d := ncpdp.GetDURFieldAsString(1)
+	if d == nil {
+		t.Errorf("Unable to find DUR Segment")
 	}
 
 	ef := ncpdp.GetFieldValueAsString(3, "07", "D2")

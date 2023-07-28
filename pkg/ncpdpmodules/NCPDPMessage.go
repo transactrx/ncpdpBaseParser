@@ -49,6 +49,10 @@ func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, 
 	return nil
 }
 
+func (msg *NCPDPMessage) GetDURFieldAsString(claimIndex int) []*orderedmap.OrderedMap[string] {
+	return msg.GetFieldValueAsGroup(claimIndex, "08", "7E")
+}
+
 func (msg *NCPDPMessage) GetFieldValueAsGroup(groupNumber int, segment string, fieldId string) []*orderedmap.OrderedMap[string] {
 	seg, ok := msg.Groups[groupNumber].Segments.GetAsValue(segment)
 	if !ok {

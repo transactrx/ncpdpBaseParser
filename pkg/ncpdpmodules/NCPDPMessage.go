@@ -49,6 +49,10 @@ func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, 
 	return nil
 }
 
+func (msg *NCPDPMessage) GetClinicalInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
+	return msg.GetFieldValueAsGroup(claimIndex, "13", "VE")
+}
+
 func (msg *NCPDPMessage) GetCompoundInfoFieldAsString(claimIndex int, fieldId string) *string {
 	return msg.GetFieldValueAsString(claimIndex, "10", fieldId)
 }

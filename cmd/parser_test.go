@@ -27,6 +27,13 @@ func TestCreateNcpdpObject(t *testing.T) {
 		t.Fatalf("Error parsing NCPDP request: %v", err)
 	}
 
+	//result validations
+
+	c := ncpdp.GetCompoundInfoFieldAsString(1, "EF")
+	if c == nil {
+		t.Errorf("Unable to find Compund Segment")
+	}
+
 	b := ncpdp.GetHeaderFieldAsString("bin")
 	if b == nil {
 		t.Errorf("Unable to find field value for bin Expected Bin Number")

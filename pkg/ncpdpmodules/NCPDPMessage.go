@@ -21,11 +21,23 @@ func (msg *NCPDPMessage) GetHeaderFieldAsString(fieldId string) *string {
 	return nil
 }
 
-func (msg *NCPDPMessage) GetPatientFieldAsString(fieldId string) *string {
+func (msg *NCPDPMessage) GetResponsePatientFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "29", fieldId)
+}
+
+func (msg *NCPDPMessage) GetResponseInsuranceFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "25", fieldId)
+}
+
+func (msg *NCPDPMessage) GetResponseMessageFieldAsString(fieldId string) *string {
+	return msg.GetFieldValueAsString(0, "20", fieldId)
+}
+
+func (msg *NCPDPMessage) GetRequestPatientFieldAsString(fieldId string) *string {
 	return msg.GetFieldValueAsString(0, "01", fieldId)
 }
 
-func (msg *NCPDPMessage) GetInsuranceFieldAsString(fieldId string) *string {
+func (msg *NCPDPMessage) GetRequestInsuranceFieldAsString(fieldId string) *string {
 	return msg.GetFieldValueAsString(0, "04", fieldId)
 }
 
@@ -49,19 +61,19 @@ func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, 
 	return nil
 }
 
-func (msg *NCPDPMessage) GetClinicalInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
+func (msg *NCPDPMessage) GetRequestClinicalInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
 	return msg.GetFieldValueAsGroup(claimIndex, "13", "VE")
 }
 
-func (msg *NCPDPMessage) GetCompoundInfoFieldAsString(claimIndex int, fieldId string) *string {
+func (msg *NCPDPMessage) GetRequestCompoundInfoFieldAsString(claimIndex int, fieldId string) *string {
 	return msg.GetFieldValueAsString(claimIndex, "10", fieldId)
 }
 
-func (msg *NCPDPMessage) GetCompoundDtoInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
+func (msg *NCPDPMessage) GetRequestCompoundDtoInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
 	return msg.GetFieldValueAsGroup(claimIndex, "10", "EC")
 }
 
-func (msg *NCPDPMessage) GetDURFieldAsString(claimIndex int) []*orderedmap.OrderedMap[string] {
+func (msg *NCPDPMessage) GetRequestDURFieldAsString(claimIndex int) []*orderedmap.OrderedMap[string] {
 	return msg.GetFieldValueAsGroup(claimIndex, "08", "7E")
 }
 

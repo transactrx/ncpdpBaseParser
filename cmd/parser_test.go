@@ -75,7 +75,7 @@ func TestCreateNcpdpObject(t *testing.T) {
 		t.Fatalf("Error parsing NCPDP request: %v", err)
 	}
 
-	count := rs.GetHeaderFieldAsString("transactionCount")
+	count := ncpdp.GetHeaderFieldAsString("transactionCount")
 
 	if count == nil {
 		t.Errorf("Unable to find field value for transactionCount")
@@ -83,7 +83,7 @@ func TestCreateNcpdpObject(t *testing.T) {
 		log.Printf("Transaction Count: %s", *count)
 	}
 
-	p = rs.GetResponseMessageFieldAsString("F4")
+	p = ncpdp.GetResponseMessageFieldAsString("F4")
 	if p == nil {
 		t.Errorf("Unable to find field value for 20-F4. Expected Mesasge")
 	}

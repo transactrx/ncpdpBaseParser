@@ -19,8 +19,8 @@ func TestCreateNcpdpObject(t *testing.T) {
 	//compound messed up
 	request = "021684D0B1DATAUNVAIL4011669742144     20230705          \u001E\u001CAM04\u001CC2ZCC36516227001      \u001CCCJOHN      \u001CCDDOE         \u001CC1CHC            \u001CC3   \u001CC61\u001E\u001CAM01\u001CCX99\u001CCYZCC36516227001      \u001CC420030306\u001CC52\u001CCAJANE      \u001CCBDOE         \u001CCM2209 DANIEL ISLAND DR         \u001CCNCHARLESTON          \u001CCOSC\u001CCP29492          \u001CC701\u001D\u001E\u001CAM07\u001CEM1\u001CD2000000328839\u001CE100\u001CD70                  \u001CE70000004000\u001CD300\u001CD5002\u001CD62\u001CD80\u001CDE20230705\u001CDF01\u001CDJ2\u001CNX1\u001CDK08\u001CET0000004000\u001CC800\u001CEU00\u001CEV00000000000\u001CU701\u001E\u001CAM11\u001CD90000089A\u001CDC0000100{\u001CDX0000000{\u001CDQ0000182G\u001CDU0000189A\u001CDN01\u001E\u001CAM03\u001CEZ01\u001CDB1932106747     \u001CDRSCOTT          \u001E\u001CAM08\u001C7E1\u001CE4AD\u001CE500\u001CE600\u001C8E11\u001CJ9  \u001CH6                   \u001E\u001CAM10\u001CEF17\u001CEG1\u001CEC02\u001CRE03\u001CTE51552032304        \u001CED0000000022\u001CEE0000013{\u001CUE01\u001CRE03\u001CTE38779028908        \u001CED0000008647\u001CEE0000076A\u001CUE01\u001D\u001E\u001CAM07\u001CEM1\u001CD2000000328838\u001CE103\u001CD700121075908        \u001CE70000080000\u001CD300\u001CD5005\u001CD61\u001CD80\u001CDE20230705\u001CDF00\u001CDJ2\u001CET0000080000\u001CC800\u001CEU00\u001CEV00000000000\u001CU701\u001E\u001CAM11\u001CD90000324G\u001CDC0000100{\u001CDX0000000{\u001CDQ0000424G\u001CDU0000424G\u001CDN01\u001E\u001CAM03\u001CEZ01\u001CDB1932106747     \u001CDRSCOTT          \u001D\u001E\u001CAM07\u001CEM1\u001CD2000000328840\u001CE100\u001CD70                  \u001CE70000200000\u001CD300\u001CD5005\u001CD62\u001CD80\u001CDE20230705\u001CDF01\u001CDJ2\u001CNX1\u001CDK08\u001CET0000200000\u001CC800\u001CEU00\u001CEV00000000000\u001CU701\u001E\u001CAM11\u001CD90000788E\u001CDC0000100{\u001CDX0000000{\u001CDQ0000832B\u001CDU0000888E\u001CDN01\u001E\u001CAM03\u001CEZ01\u001CDB1932106747     \u001CDRSCOTT          \u001E\u001CAM08\u001C7E1\u001CE4AD\u001CE500\u001CE600\u001C8E13\u001CJ9  \u001CH6                   \u001E\u001CAM10\u001CEF12\u001CEG3\u001CEC03\u001CTE00395103196        \u001CED0000017440\u001CEE0000012A\u001CUE01\u001CRE03\u001CTE00395009416        \u001CED0000218000\u001CEE0000129D\u001CUE01\u001CRE03\u001CTE51552037807        \u001CED0000017440\u001CEE0000647{\u001CUE01\u001C2G02\u001C2HXX\u001C2HXY\u001D\u001E\u001CAM07\u001CEM1\u001CD2000000328841\u001CE103\u001CD757237007630        \u001CE70000010000\u001CD300\u001CD5004\u001CD61\u001CD80\u001CDE20230705\u001CDF00\u001CDJ2\u001CET0000010000\u001CC800\u001CEU00\u001CEV00000000000\u001CU701\u001E\u001CAM11\u001CD90005113A\u001CDC0000100{\u001CDX0000000{\u001CDQ0005213A\u001CDU0005213A\u001CDN01\u001E\u001CAM03\u001CEZ01\u001CDB1932106747     \u001CDRSCOTT          "
 
-	ncpdp, err := ncpdpparser.New(request)
-	if ncpdp == nil {
+	rs, err := ncpdpparser.New(request)
+	if rs == nil {
 		t.Fatalf("NCPDP object is nil")
 	}
 
@@ -30,43 +30,43 @@ func TestCreateNcpdpObject(t *testing.T) {
 
 	//result validations
 
-	c := ncpdp.GetCompoundInfoFieldAsString(1, "EF")
+	c := rs.GetRequestCompoundInfoFieldAsString(1, "EF")
 	if c == nil {
 		t.Errorf("Unable to find Compund Segment")
 	}
 
-	b := ncpdp.GetHeaderFieldAsString("bin")
+	b := rs.GetHeaderFieldAsString("bin")
 	if b == nil {
 		t.Errorf("Unable to find field value for bin Expected Bin Number")
 	} else {
 		log.Printf("Bin Number: %s", *b)
 	}
 
-	p := ncpdp.GetPatientFieldAsString("CY")
+	p := rs.GetRequestPatientFieldAsString("CY")
 	if p == nil {
 		t.Errorf("Unable to find field value for 01-CY. Expected PatientID")
 	} else {
 		log.Printf("Patient PatientID: %s", *p)
 	}
 
-	i := ncpdp.GetInsuranceFieldAsString("C2")
+	i := rs.GetRequestInsuranceFieldAsString("C2")
 	if i == nil {
 		t.Errorf("Unable to find field value for 02-C2. Expected CardholderId")
 	}
 
-	d := ncpdp.GetDURFieldAsString(1)
+	d := rs.GetRequestDURFieldAsString(1)
 	if d == nil {
 		t.Errorf("Unable to find DUR Segment")
 	}
 
-	ef := ncpdp.GetFieldValueAsString(3, "07", "D2")
+	ef := rs.GetFieldValueAsString(3, "07", "D2")
 	log.Printf("EF: %v", ef)
-	gr := ncpdp.GetFieldValueAsGroup(3, "10", "EC")
+	gr := rs.GetFieldValueAsGroup(3, "10", "EC")
 
 	log.Printf("GR: %v", gr)
 
 	response := "D0B11A011003890252     20230423\u001e\u001cAM20\u001cF4DO NOT PROCESS IF GOV'T BENEFICIARY\u001e\u001cAM25\u001c2Fid\u001e\u001cAM29\u001cCAMARVIN\u001cCBCARMANY\u001cC419540217\u001d\u001e\u001cAM21\u001cANP\u001cF3104989367\u001cFA0\u001cFQfrank paid 1 toward copay\u001e\u001cAM22\u001cEM1\u001cD28682399\u001c9F0\u001e\u001cAM23\u001cF5411F\u001cF621B\u001cF7200B\u001cFL200B\u001cF910{\u001cFM16"
-	rs, err := ncpdpparser.New(response)
+	ncpdp, err := ncpdpparser.New(response)
 	if ncpdp == nil {
 		t.Fatalf("NCPDP object is nil")
 	}
@@ -75,12 +75,27 @@ func TestCreateNcpdpObject(t *testing.T) {
 		t.Fatalf("Error parsing NCPDP request: %v", err)
 	}
 
-	count := rs.GetHeaderFieldAsString("transactionCount")
+	count := ncpdp.GetHeaderFieldAsString("transactionCount")
 
 	if count == nil {
 		t.Errorf("Unable to find field value for transactionCount")
 	} else {
 		log.Printf("Transaction Count: %s", *count)
 	}
+
+	p = ncpdp.GetResponseMessageFieldAsString("F4")
+	if p == nil {
+		t.Errorf("Unable to find field value for 20-F4. Expected Mesasge")
+	}
+	//
+	//p = rs.GetResponsePatientFieldAsString("CY")
+	//if p == nil {
+	//	t.Errorf("Unable to find field value for 01-CY. Expected PatientID")
+	//}
+	//
+	//i = rs.GetResponseInsuranceFieldAsString("C2")
+	//if i == nil {
+	//	t.Errorf("Unable to find field value for 02-C2. Expected CardholderId")
+	//}
 
 }

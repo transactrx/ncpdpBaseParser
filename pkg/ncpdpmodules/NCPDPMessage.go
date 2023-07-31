@@ -61,6 +61,14 @@ func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, 
 	return nil
 }
 
+func (msg *NCPDPMessage) GetResponseStatusAdditionalInfo(statusIndex int) []*orderedmap.OrderedMap[string] {
+	return msg.GetFieldValueAsGroup(statusIndex, "21", "UF")
+}
+
+func (msg *NCPDPMessage) GetResponseStatusRejectCodes(statusIndex int) []*orderedmap.OrderedMap[string] {
+	return msg.GetFieldValueAsGroup(statusIndex, "21", "FA")
+}
+
 func (msg *NCPDPMessage) GetRequestClinicalInfo(claimIndex int) []*orderedmap.OrderedMap[string] {
 	return msg.GetFieldValueAsGroup(claimIndex, "13", "VE")
 }

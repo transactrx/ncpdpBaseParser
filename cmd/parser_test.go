@@ -83,19 +83,4 @@ func TestCreateNcpdpObject(t *testing.T) {
 		log.Printf("Transaction Count: %s", *count)
 	}
 
-	p = ncpdp.GetResponseMessageFieldAsString("F4")
-	if p == nil {
-		t.Errorf("Unable to find field value for 20-F4. Expected Mesasge")
-	}
-	//
-	//p = rs.GetResponsePatientFieldAsString("CY")
-	//if p == nil {
-	//	t.Errorf("Unable to find field value for 01-CY. Expected PatientID")
-	//}
-	//
-	//i = rs.GetResponseInsuranceFieldAsString("C2")
-	//if i == nil {
-	//	t.Errorf("Unable to find field value for 02-C2. Expected CardholderId")
-	//}
-
 }

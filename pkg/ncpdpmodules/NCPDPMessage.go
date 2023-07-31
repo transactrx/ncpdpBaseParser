@@ -61,6 +61,10 @@ func (msg *NCPDPMessage) GetFieldValueAsString(groupNumber int, segment string, 
 	return nil
 }
 
+func (msg *NCPDPMessage) GetResponseBenefitStageInfoSegment(statusIndex int) []*orderedmap.OrderedMap[string] {
+	return msg.GetFieldValueAsGroup(statusIndex, "23", "MU")
+}
+
 func (msg *NCPDPMessage) GetResponseStatusAdditionalInfo(statusIndex int) []*orderedmap.OrderedMap[string] {
 	return msg.GetFieldValueAsGroup(statusIndex, "21", "UF")
 }

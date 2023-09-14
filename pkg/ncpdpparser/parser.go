@@ -46,7 +46,7 @@ func initializeGroupedFields() map[string][]string {
 
 	grpFields["MU"] = []string{"MV", "MW"} //COORDINATION OF BENEFITS/OTHER PAYMENTS SEGMENT
 
-	grpFields["J6"] = []string{"E4", "FS", "FT", "FU", "FV", "FW", "FX ", "FY ", "NS"} //RESPONSE DUR/PPS SEGMENT -->ko
+	grpFields["J6"] = []string{"E4", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "NS"} //RESPONSE DUR/PPS SEGMENT -->ko
 
 	grpFields["NT"] = []string{"5C", "6C", "7C", "MH", "NU", "MJ", "UV", "UB", "UW", "UX", "UY"} //RESPONSE COORDINATION OF BENEFITS/OTHER PAYERS SEGMENT
 

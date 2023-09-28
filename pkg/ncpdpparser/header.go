@@ -10,43 +10,43 @@ func DetermineTransactionType(data []byte) (int, error) {
 
 	//check if response object
 	headerInfo := string(data[0:4])
-	if headerInfo == "D0B1" {
+	if headerInfo == "D0B1" || headerInfo == "DXB1" {
 		return B1ResponseType, nil
 	}
-	if headerInfo == "D0B2" {
+	if headerInfo == "D0B2" || headerInfo == "DXB2" {
 		return B2ResponseType, nil
 	}
-	if headerInfo == "D0B3" {
+	if headerInfo == "D0B3" || headerInfo == "DXB3" {
 		return B3ResponseType, nil
 	}
-	if headerInfo == "D0S1" {
+	if headerInfo == "D0S1" || headerInfo == "DXS1" {
 		return S1ResponseType, nil
 	}
-	if headerInfo == "D0S2" {
+	if headerInfo == "D0S2" || headerInfo == "DXS2" {
 		return S2ResponseType, nil
 	}
-	if headerInfo == "D0E1" {
+	if headerInfo == "D0E1" || headerInfo == "DXE1" {
 		return E1ResponseType, nil
 	}
-	if headerInfo == "D0N1" {
+	if headerInfo == "D0N1" || headerInfo == "DXN1" {
 		return N1ResponseType, nil
 	}
 
 	headerInfo = string(data[6:10])
-	if headerInfo == "D0B1" {
+	if headerInfo == "D0B1" || headerInfo == "DXB1" {
 		return B1RequestType, nil
 	}
-	if headerInfo == "D0B2" {
+	if headerInfo == "D0B2" || headerInfo == "DXB2" {
 		return B2RequestType, nil
 	}
-	if headerInfo == "D0B3" {
+	if headerInfo == "D0B3" || headerInfo == "DXB3" {
 		return B3RequestType, nil
 	}
-	if headerInfo == "D0S1" {
+	if headerInfo == "D0S1" || headerInfo == "DXS1" {
 		return S1RequestType, nil
 	}
-	if headerInfo == "D0S2" {
-		return S1RequestType, nil
+	if headerInfo == "D0S2" || headerInfo == "DXS2" {
+		return S2RequestType, nil
 	}
 
 	fmt.Printf("Unable to parse transactions. NCPDP message is invalid or unsupported -> %s", string(data))

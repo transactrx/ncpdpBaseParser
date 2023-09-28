@@ -15,4 +15,8 @@ const (
 	E1ResponseType
 	N1RequestType
 	N1ResponseType
+	Q1RequestType
+	Q1ResponseType
+	Q2RequestType
+	Q2ResponseType
 )

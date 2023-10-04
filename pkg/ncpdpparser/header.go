@@ -172,9 +172,9 @@ func parseHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 	}
 
 	switch messageType {
-	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, S3RequestType, E1RequestType, Q1RequestType, Q2RequestType:
+	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, S3RequestType, E1RequestType, Q1RequestType, Q2RequestType, P1RequestType, P2RequestType, P3RequestType, P4RequestType:
 		return newRequestHeader(data)
-	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, E1ResponseType, Q1ResponseType, Q2ResponseType, P1ResponseType, P2ResponseType, P3ResponseType, P4ResponseType:
+	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, S3ResponseType, E1ResponseType, Q1ResponseType, Q2ResponseType, P1ResponseType, P2ResponseType, P3ResponseType, P4ResponseType:
 		return newResponseHeader(data)
 	default:
 		return nil, errors.New("unable to determine transaction type")

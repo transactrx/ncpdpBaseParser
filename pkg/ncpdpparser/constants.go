@@ -19,4 +19,14 @@ const (
 	Q1ResponseType
 	Q2RequestType
 	Q2ResponseType
+	S3RequestType
+	S3ResponseType
+	P1RequestType
+	P1ResponseType
+	P2RequestType
+	P2ResponseType
+	P3RequestType
+	P3ResponseType
+	P4RequestType
+	P4ResponseType
 )

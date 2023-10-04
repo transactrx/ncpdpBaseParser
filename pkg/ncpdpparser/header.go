@@ -25,19 +25,44 @@ func DetermineTransactionType(data []byte) (int, error) {
 	if headerInfo == "D0S2" || headerInfo == "DXS2" {
 		return S2ResponseType, nil
 	}
+
+	if headerInfo == "D0S3" || headerInfo == "DXS3" {
+		return S3ResponseType, nil
+	}
+
 	if headerInfo == "D0E1" || headerInfo == "DXE1" {
 		return E1ResponseType, nil
 	}
+
 	if headerInfo == "D0N1" || headerInfo == "DXN1" {
 		return N1ResponseType, nil
 	}
+
 	if headerInfo == "D0Q1" || headerInfo == "DXQ1" {
 		return Q1ResponseType, nil
 	}
+
 	if headerInfo == "D0Q2" || headerInfo == "DXQ2" {
 		return Q2ResponseType, nil
 	}
 
+	if headerInfo == "D0P1" || headerInfo == "DXP1" {
+		return P1ResponseType, nil
+	}
+
+	if headerInfo == "D0P2" || headerInfo == "DXP2" {
+		return P2ResponseType, nil
+	}
+
+	if headerInfo == "D0P3" || headerInfo == "DXP3" {
+		return P3ResponseType, nil
+	}
+
+	if headerInfo == "D0P4" || headerInfo == "DXP4" {
+		return P4ResponseType, nil
+	}
+
+	//check if request object
 	headerInfo = string(data[6:10])
 	if headerInfo == "D0B1" || headerInfo == "DXB1" {
 		return B1RequestType, nil
@@ -54,12 +79,27 @@ func DetermineTransactionType(data []byte) (int, error) {
 	if headerInfo == "D0S2" || headerInfo == "DXS2" {
 		return S2RequestType, nil
 	}
-
+	if headerInfo == "D0S3" || headerInfo == "DXS3" {
+		return S3RequestType, nil
+	}
 	if headerInfo == "D0Q1" || headerInfo == "DXQ1" {
 		return Q1RequestType, nil
 	}
 	if headerInfo == "D0Q2" || headerInfo == "DXQ2" {
 		return Q2RequestType, nil
+	}
+
+	if headerInfo == "D0P1" || headerInfo == "DXP1" {
+		return P1RequestType, nil
+	}
+	if headerInfo == "D0P2" || headerInfo == "DXP2" {
+		return P2RequestType, nil
+	}
+	if headerInfo == "D0P3" || headerInfo == "DXP3" {
+		return P3RequestType, nil
+	}
+	if headerInfo == "D0P4" || headerInfo == "DXP4" {
+		return P4RequestType, nil
 	}
 
 	fmt.Printf("Unable to parse transactions. NCPDP message is invalid or unsupported -> %s", string(data))
@@ -132,9 +172,9 @@ func parseHeader(data []byte) (*orderedmap.OrderedMap[string], error) {
 	}
 
 	switch messageType {
-	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, E1RequestType, Q1RequestType, Q2RequestType:
+	case B1RequestType, B2RequestType, B3RequestType, N1RequestType, S1RequestType, S2RequestType, S3RequestType, E1RequestType, Q1RequestType, Q2RequestType:
 		return newRequestHeader(data)
-	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, E1ResponseType, Q1ResponseType, Q2ResponseType:
+	case B1ResponseType, B2ResponseType, B3ResponseType, N1ResponseType, S1ResponseType, S2ResponseType, E1ResponseType, Q1ResponseType, Q2ResponseType, P1ResponseType, P2ResponseType, P3ResponseType, P4ResponseType:
 		return newResponseHeader(data)
 	default:
 		return nil, errors.New("unable to determine transaction type")

@@ -82,6 +82,9 @@ func DetermineTransactionType(data []byte) (int, error) {
 	if headerInfo == "D0S3" || headerInfo == "DXS3" {
 		return S3RequestType, nil
 	}
+	if headerInfo == "D0E1" || headerInfo == "DXE1" {
+		return E1RequestType, nil
+	}
 	if headerInfo == "D0Q1" || headerInfo == "DXQ1" {
 		return Q1RequestType, nil
 	}
@@ -100,6 +103,9 @@ func DetermineTransactionType(data []byte) (int, error) {
 	}
 	if headerInfo == "D0P4" || headerInfo == "DXP4" {
 		return P4RequestType, nil
+	}
+	if headerInfo == "D0N1" || headerInfo == "DXN1" {
+		return N1RequestType, nil
 	}
 
 	fmt.Printf("Unable to parse transactions. NCPDP message is invalid or unsupported -> %s", string(data))

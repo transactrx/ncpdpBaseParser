@@ -159,6 +159,10 @@ func parseSegment(s string) *orderedmap.OrderedMap[any] {
 	var groupFieldId *string
 	for _, fieldDatum := range fieldData {
 
+		if len(strings.TrimSpace(fieldDatum)) <= 2 {
+			continue
+		}
+
 		fieldId := fieldDatum[0:2]
 		fieldValue := fieldDatum[2:]
 		//IS THIS FIELD THE COUNTER FOR A REPEATING GROUP?
